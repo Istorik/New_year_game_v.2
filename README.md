@@ -1,9 +1,11 @@
 # Install
 
-pip3 install django
-pip install django-bootstrap4
+    pip install django
+    pip install django-bootstrap4
+    pip install pyqrcode
+    pip install pypng
 
-python manage.py startapp newYearGame
+    python manage.py startapp newYearGame
 
 Add to INSTALLED_APPS in your settings.py:
 'bootstrap4',
