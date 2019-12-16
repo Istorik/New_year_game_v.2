@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+from .models import Ulika_table
+
+
+
 # Create your views here.
 
 def index(request):
@@ -19,6 +23,19 @@ def qr(request):
 def ulika(User, Qr):
     ''' выводим улику в соответсвии с id
     '''
+
+    posts = {
+        'ulikaImg': '',
+        'ulikaMesto': '',
+        'status': '',
+        'ulikaName': '',
+        'ulikaText': '',
+        'Lupa': '',
+        'Photo': '',
+        'Him': '',
+        'Dictofon': '',
+    }
+    return render(request, 'newYearGame/ulika', {'posts': posts})
     pass
 
 def musor(User, Qr):

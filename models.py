@@ -46,3 +46,6 @@ class Tools_table(models.Model):
 
 class Qr_table(models.Model):
     pass
+
+class Ulika_table(models.Model):
+    pass
