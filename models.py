@@ -43,3 +43,6 @@ class Tools_table(models.Model):
             self.id_item,
             self.item_name,
         )
+
+class Qr_table(models.Model):
+    pass
