@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('ulika', views.ulika, name='ulika'),
+    path('<pk>/ulika', views.ulika, name='ulika'),
 ]

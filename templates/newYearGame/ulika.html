@@ -10,20 +10,21 @@
 
 <div class="container">
 
-
   <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-4">
 
       <h2>Улика № {{ posts.id }}/14</h2>
 	<div class='ulika_all'>
 		<div class='ulika_img'>
-		  <img src={ulikaImg} alt='avatar'>
+		  <img src=/{{ post.ulikaImg }} alt='avatar'>
 		</div>
 		<div class='ulika_info'>
 			<p><b>Местонахождение улики:</b> {{ posts.ulikaMesto}}</p>
 			<p><b>Улика изучена на: </b></p>
-			<div class="progress-bar orange shine">
-				<span style="width: {status}%"><center>{{ posts.status}}%</center></span>
+			<div class="progress">
+				<div class="progress-bar bg-warning" style="width: {{ posts.status}}%;" aria-valuenow="{{ posts.status}}" aria-valuemin="0" aria-valuemax="100">
+					{{ posts.status}}%
+				</div>
 			</div>
 		</div>
 	</div>

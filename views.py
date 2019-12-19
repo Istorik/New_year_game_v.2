@@ -20,12 +20,12 @@ def qr(request):
     '''
     pass
 
-def ulika(request):
+def ulika(request, pk):
     ''' выводим улику в соответсвии с id
     '''
 
     posts = {
-        'id': 1,
+        'id': pk,
         'ulikaImg': 'img',
         'ulikaMesto': 'Библиотека',
         'status': 49,
