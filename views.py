@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, request
 
 from .models import Ulika_table
 
@@ -20,22 +20,23 @@ def qr(request):
     '''
     pass
 
-def ulika(User, Qr):
+def ulika(request):
     ''' выводим улику в соответсвии с id
     '''
 
     posts = {
-        'ulikaImg': '',
-        'ulikaMesto': '',
-        'status': '',
-        'ulikaName': '',
-        'ulikaText': '',
+        'id': 1,
+        'ulikaImg': 'img',
+        'ulikaMesto': 'Библиотека',
+        'status': 49,
+        'ulikaName': 'Пятно',
+        'ulikaText': 'Темное пятно на скатерти',
         'Lupa': '',
         'Photo': '',
         'Him': '',
         'Dictofon': '',
     }
-    return render(request, 'newYearGame/ulika', {'posts': posts})
+    return render(request, 'newYearGame/ulika.html', {'posts': posts})
     pass
 
 def musor(User, Qr):

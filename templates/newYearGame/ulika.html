@@ -14,26 +14,26 @@
   <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-4">
 
-      <h2>Улика № {id}/14</h2>
+      <h2>Улика № {{ posts.id }}/14</h2>
 	<div class='ulika_all'>
 		<div class='ulika_img'>
 		  <img src={ulikaImg} alt='avatar'>
 		</div>
 		<div class='ulika_info'>
-			<p><b>Местонахождение улики:</b> {ulikaMesto}</p>
+			<p><b>Местонахождение улики:</b> {{ posts.ulikaMesto}}</p>
 			<p><b>Улика изучена на: </b></p>
 			<div class="progress-bar orange shine">
-				<span style="width: {status}%"><center>{status}%</center></span>
+				<span style="width: {status}%"><center>{{ posts.status}}%</center></span>
 			</div>
 		</div>
 	</div>
 	<div class='ulika_txt'>
-		<h1>{ulikaName}</h1>
-		<p>{ulikaText}</p>
-		<p>{Lupa}</p>
-		<p>{Photo}</p>
-		<p>{Him}</p>
-		<p>{Dictofon}</p>
+		<h1>{{ posts.ulikaName}}</h1>
+		<p>{{ posts.ulikaText}}</p>
+		<p>{{ posts.Lupa}}</p>
+		<p>{{ posts.Photo}}</p>
+		<p>{{ posts.Him}}</p>
+		<p>{{ posts.Dictofon}}</p>
 	</div>
     </div>
   </div>
