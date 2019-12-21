@@ -37,7 +37,6 @@ def ulika(request, pk):
         'Dictofon': '',
     }
     return render(request, 'newYearGame/ulika.html', {'posts': posts})
-    pass
 
 def musor(User, Qr):
     '''
@@ -51,10 +50,15 @@ def musor(User, Qr):
     '''
     pass
 
-def unstrument(User, Qr):
+def loot(request, pk):
     ''' генерируем список из не найденных инструментов
                 выводим случайный объект
-
-
     '''
+
+    # если юзер + qr = True то text = 'Вы не нашли ни чего интересного.'
+    # иначе вернуть случайны из массива инструментов
+
+    text = 'Вы не нашли ни чего интересного.'
+    return render(request, 'newYearGame/loot.html', {'text': text})
+
     pass
