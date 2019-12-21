@@ -3,6 +3,8 @@ from django.http import HttpResponse, request
 
 from .models import Ulika_table
 
+import pyqrcode	# sudo pip3 install pyqrcode
+import png	# sudo pip3 install pypng
 
 
 # Create your views here.
@@ -18,7 +20,13 @@ def qr(request):
             улика
                 перенаправить на улику
     '''
-    pass
+    image = []
+    for i in range(1, 29):
+        code = pyqrcode.create('http://qvest.asspo.ru/cgi-bin/lut.py?idLut={}'.format(i))
+        image.append(code.png_as_base64_str(scale=6))
+    return render(request, 'newYearGame/qr_list.html', {'qrs': image})
+
+
 
 def ulika(request, pk):
     ''' выводим улику в соответсвии с id

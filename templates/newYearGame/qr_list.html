@@ -1,10 +1,13 @@
 {% block content %}
 
-    {% for qr in qrs %}
+<div class="row">
     <div class="col-sm-12 col-md-12 col-lg-4">
-		<p>{{ qr }}</p>
-    </div>
+    {% for qr in qrs %}
+
+        <img width="200" height="200"  src="data:image/png;base64,{{ qr }}">
+
     {% endfor %}
-  </div>
+    </div>
+</div>
 
 {% endblock %}
