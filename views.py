@@ -4,9 +4,9 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import redirect
 from django.db import transaction
 
-from random import randint
+from random import randint, choice
 
-from .models import Ulika_table, Qr_table
+from .models import Ulika_table, Qr_table, Tools_table
 
 from .forms import UserForm, ProfileForm, Qr_tableForm
 
@@ -29,7 +29,6 @@ def qr(request):
             j = randint(1000000, 9999999)
             p = Qr_table(qr_id = j,)
             p.save(force_insert=True)
-
 
     images = Qr_table.objects.all()
 
@@ -55,7 +54,7 @@ def ulika(request, pk):
         'Dictofon': '',
     }
 
-    posts = get_object_or_404(Ulika_table, pk=pk)
+    posts = get_object_or_404(Ulika_table, idUlika=pk)
 
     status = 15
 
@@ -80,13 +79,58 @@ def loot(request, pk):
 
     # если юзер + qr = True то text = 'Вы не нашли ни чего интересного.'
     # иначе вернуть случайны из массива инструментов
+    type_slot_list = (
+        ('1','Лупа'),
+        ('2','Диктофон'),
+        ('3','Химический набор'),
+        ('4','Сканер'),
+        ('5', 'Вода'),
+        ('6', 'Гвоздь'),
+        ('7', 'Йод'),
+        ('8', 'Фенол Фталеин'),
+        ('9', 'Керосин'),
+        ('10', 'Мусор'),
+        ('11', 'Мусор'),
+        ('12', 'Мусор'),
+        ('13', 'Мусор'),
+        ('14', 'Мусор'),
+        ('15', 'Мусор'),
+        ('16', 'Мусор'),
+        ('17', 'Мусор'),
+        ('18', 'Мусор'),
+        ('19', 'Мусор'),
+        ('20', 'Мусор'),
+    )
 
+    post = get_object_or_404(Qr_table, qr_id=pk)
+    test = Tools_table.objects.filter(user_id=request.user, id_Qr=post)
+
+    if test:
+        print(test)
+        text = 'Вы уже здесь были</br> '
+        return render(request, 'newYearGame/loot.html', {'text': text})
+    else:
+        a = list(range(1, 21))
+        user_loot_list = Tools_table.objects.filter(user_id=request.user)
+        if len(user_loot_list) > 19:return render(request, 'newYearGame/loot.html', {'text': 'Вы нашли все, что можно было найти'})
+        l = []
+        for i in user_loot_list: l.append(i.type_slot)
+
+        c = list(set(a) - set(l))
+        loot = choice(c)
+
+        p = Tools_table(user_id=request.user, id_Qr=post, type_slot=loot)
+        p.save(force_insert=True)
+
+        print(loot)
+
+        text = 'Покапавшись, Вы нашли </br> <b>{}</b>'.format(type_slot_list[loot-1][1])
+        return render(request, 'newYearGame/loot.html', {'text': text})
 
 
     text = 'Вы не нашли ни чего интересного.'
     return render(request, 'newYearGame/loot.html', {'text': text})
 
-    pass
 
 @login_required
 @transaction.atomic

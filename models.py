@@ -18,7 +18,6 @@ def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 
-
 class Qr_table(models.Model):
     qr_id = models.IntegerField('Номер QR')
 
@@ -55,12 +54,23 @@ class Tools_table(models.Model):
         ('2','Диктофон'),
         ('3','Химический набор'),
         ('4','Сканер'),
-        ('5', 'Мусор'),
+        ('5', 'Вода'),
         ('6', 'Гвоздь'),
         ('7', 'Йод'),
         ('8', 'Фенол Фталеин'),
         ('9', 'Керосин'),
-        ('10', 'Вода'))
+        ('10', 'Мусор'),
+        ('11', 'Мусор'),
+        ('12', 'Мусор'),
+        ('13', 'Мусор'),
+        ('14', 'Мусор'),
+        ('15', 'Мусор'),
+        ('16', 'Мусор'),
+        ('17', 'Мусор'),
+        ('18', 'Мусор'),
+        ('19', 'Мусор'),
+        ('20', 'Мусор'),
+    )
 
     type_slot = models.CharField('номер инструмента',
         choices=type_slot_list,
@@ -76,8 +86,8 @@ class Tools_table(models.Model):
 
     def __str__(self):
         return "{} {} {} {}".format(
-            self.user_id,
-            self.type_slot_list[self.type_slot],
+            self.user_id.username,
+            self.type_slot_list[int(self.type_slot)-1][1],
             self.times,
             self.spent,
         )
