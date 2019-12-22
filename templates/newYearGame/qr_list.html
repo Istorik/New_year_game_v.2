@@ -1,12 +1,21 @@
 {% block content %}
 
+
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-4">
-    {% for qr in qrs %}
+    <form action="#" method="post" class="form">
+      {% csrf_token %}
 
-        <img width="200" height="200"  src="data:image/png;base64,{{ qr }}">
+        <button type="submit" class="btn btn-success">Create Qr-Code</button>
+    </form>
+    </div>
+</div>
 
-    {% endfor %}
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-4">
+            {% for qr in qrs %}
+                <img width="200" height="200"  src="data:image/png;base64,{{ qr }}">
+            {% endfor %}
     </div>
 </div>
 

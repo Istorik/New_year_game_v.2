@@ -20,7 +20,14 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 class Qr_table(models.Model):
-    pass
+    qr_id = models.IntegerField('Номер QR')
+
+    class Meta:
+        verbose_name = 'QR'
+        verbose_name_plural = 'QR'
+
+    def __str__(self):
+        return self.qr_id
 
 class Tools_table(models.Model):
     ''' id_User - кто нашел
@@ -73,8 +80,6 @@ class Tools_table(models.Model):
             self.type_slot_list[self.type_slot],
             self.times,
             self.spent,
-
-
         )
 
 class Ulika_table(models.Model):

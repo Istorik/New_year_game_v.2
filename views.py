@@ -1,11 +1,14 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, request
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import redirect
 from django.db import transaction
-from .models import Ulika_table
 
-from .forms import UserForm, ProfileForm
+from random import randint
+
+from .models import Ulika_table, Qr_table
+
+from .forms import UserForm, ProfileForm, Qr_tableForm
 
 import pyqrcode	# sudo pip3 install pyqrcode
 import png	# sudo pip3 install pypng
@@ -16,18 +19,26 @@ import png	# sudo pip3 install pypng
 def index(request):
     return HttpResponse("Добро пожаловать на нашу игру")
 
+@user_passes_test(lambda u: u.is_superuser)
 def qr(request):
-    ''' Найден qr код
-        Тестим что это за код.
-            мусор
-                перенаправитиьт на musor
-            улика
-                перенаправить на улику
+    ''' создаем 28 qr кодов для поиска инструменат
     '''
+
+    if request.method == "POST":
+        for i in range(1, 29):
+            j = randint(1000000, 9999999)
+            p = Qr_table(qr_id = j,)
+            p.save(force_insert=True)
+
+
+    images = Qr_table.objects.all()
+
     image = []
-    for i in range(1, 29):
-        code = pyqrcode.create('http://qvest.asspo.ru/cgi-bin/lut.py?idLut={}'.format(i))
+
+    for row in images:
+        code = pyqrcode.create('http://qvest.asspo.ru/{}/loot'.format(row.qr_id))
         image.append(code.png_as_base64_str(scale=6))
+
     return render(request, 'newYearGame/qr_list.html', {'qrs': image})
 
 
@@ -69,6 +80,8 @@ def loot(request, pk):
 
     # если юзер + qr = True то text = 'Вы не нашли ни чего интересного.'
     # иначе вернуть случайны из массива инструментов
+
+
 
     text = 'Вы не нашли ни чего интересного.'
     return render(request, 'newYearGame/loot.html', {'text': text})
