@@ -9,12 +9,12 @@
 {% bootstrap_messages %}
 
 <div class="container">
-
+{% autoescape off %}
     {% block content %}{% endblock content %}
-
-    <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-8">
-            <h6>@School632 2019 Russian, SPB. newYearGame ver 2.0</h6>
+{% endautoescape %}
+    <div class="row justify-content-md-center">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <h6 align="center">@School632 2019 Russian, SPB. newYearGame ver 2.0</h6>
         </div>
     </div>
 </div>

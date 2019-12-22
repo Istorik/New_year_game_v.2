@@ -1,8 +1,26 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
-# Create your models here.
-# Тест коммит
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    location = models.CharField('Класс', max_length=30, blank=True)
+    komanda = models.TextField('Помощники', blank=True)
 
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
+
+
+
+class Qr_table(models.Model):
+    pass
 
 class Tools_table(models.Model):
     ''' id_User - кто нашел
@@ -11,6 +29,20 @@ class Tools_table(models.Model):
         times - во сколько нашел
         spent - наличие в инвентаре
     '''
+
+    user_id = models.ForeignKey(
+        User,
+        verbose_name="Команда нашедшая qr-code",
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    id_Qr = models.ForeignKey(
+        Qr_table,
+        verbose_name="Найденный Qr",
+        on_delete=models.SET_NULL,
+        null=True
+    )
+
     type_slot_list = (
         ('1','Лупа'),
         ('2','Диктофон'),
@@ -23,9 +55,6 @@ class Tools_table(models.Model):
         ('9', 'Керосин'),
         ('10', 'Вода'))
 
-    id_item = models.IntegerField(default=0)
-    # id_User - кто нашел
-    # id_Qr - на каком QR коде нашел
     type_slot = models.CharField('номер инструмента',
         choices=type_slot_list,
         default=1,
@@ -39,13 +68,33 @@ class Tools_table(models.Model):
         verbose_name_plural = 'База Найденных инструментов'
 
     def __str__(self):
-        return "[{}] {}".format(
-            self.id_item,
-            self.item_name,
+        return "{} {} {} {}".format(
+            self.user_id,
+            self.type_slot_list[self.type_slot],
+            self.times,
+            self.spent,
+
+
         )
 
-class Qr_table(models.Model):
-    pass
-
 class Ulika_table(models.Model):
-    pass
+
+    idUlika = models.IntegerField(default=0)
+    ulikaName = models.CharField('Название улики', max_length=64)
+    ulikaMesto = models.CharField('Место нахождения', max_length=128)
+    ulikaText = models.TextField('Описание предмета')
+    ulikaLupa = models.TextField('Описание после изучения Лупой', blank=True)
+    ulikaPhoto = models.TextField('Описание после изучения Фотоаппаратом', blank=True)
+    ulikaHim = models.TextField('Описание после изучения Набором Криминалиста', blank=True)
+    ulikaDictofon = models.TextField('Описание после изучения Диктафоном', blank=True)
+    ulikaImg = models.CharField('Изображение', max_length=128)
+
+    class Meta:
+        verbose_name = 'Улика'
+        verbose_name_plural = 'Улики'
+
+    def __str__(self):
+        return "[{}] {}".format(
+            self.idUlika,
+            self.ulikaName,
+        )

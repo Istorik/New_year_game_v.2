@@ -5,32 +5,36 @@
 {% block content %}
 
 
-  <div class="row">
-    <div class="col-sm-12 col-md-12 col-lg-4">
+  <div class="row justify-content-md-center">
+    <div class="col-sm-12 col-md-12 col-lg-6">
 
       <h2>Улика № {{ posts.id }}/14</h2>
-	<div class='ulika_all'>
-		<div class='ulika_img'>
-		  <img src=/{{ post.ulikaImg }} alt='avatar'>
-		</div>
-		<div class='ulika_info'>
-			<p><b>Местонахождение улики:</b> {{ posts.ulikaMesto}}</p>
-			<p><b>Улика изучена на: </b></p>
-			<div class="progress">
-				<div class="progress-bar bg-warning" style="width: {{ posts.status}}%;" aria-valuenow="{{ posts.status}}" aria-valuemin="0" aria-valuemax="100">
-					{{ posts.status}}%
+
+		<div class="row justify-content-md-center">
+			<div class='col-sm-12 col-md-12 col-lg-4'>
+			  <img src= "/media/{{posts.ulikaImg}}"  alt='avatar'>
+			</div>
+
+			<div class='col-sm-12 col-md-12 offset-lg-2 col-lg-6'>
+				<p><b>Местонахождение улики:</b> {{ posts.ulikaMesto}}</p>
+				<p><b>Улика изучена на: </b></p>
+				<div class="progress">
+					<div class="progress-bar bg-warning" style="width: {{ posts.status}}%;" aria-valuenow="{{ status }}" aria-valuemin="0" aria-valuemax="100">
+						{{ status }}%
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class='ulika_txt'>
-		<h1>{{ posts.ulikaName}}</h1>
-		<p>{{ posts.ulikaText}}</p>
-		<p>{{ posts.Lupa}}</p>
-		<p>{{ posts.Photo}}</p>
-		<p>{{ posts.Him}}</p>
-		<p>{{ posts.Dictofon}}</p>
-	</div>
+		<div class="row justify-content-md-center">
+			<div class='col'>
+				<h1>{{ posts.ulikaName}}</h1>
+				<p>{{ posts.ulikaText}}</p>
+				<p>{{ posts.ulikaLupa}}</p>
+				<p>{{ posts.ulikaPhoto}}</p>
+				<p>{{ posts.ulikaHim}}</p>
+				<p>{{ posts.ulikaDictofon}}</p>
+			</div>
+		</div>
     </div>
   </div>
   {% endblock %}
