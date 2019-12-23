@@ -1,7 +1,8 @@
 from django.db import models
 
 # Create your models here.
-# Тест коммит
+# Тест коммит 2
+
 
 
 class Tools_table(models.Model):
@@ -41,7 +42,7 @@ class Tools_table(models.Model):
     def __str__(self):
         return "[{}] {}".format(
             self.id_item,
-            self.item_name,
+            self.type_slot_list[self.id_item],
         )
 
 class Qr_table(models.Model):
