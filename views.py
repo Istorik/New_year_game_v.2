@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, request
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import redirect
 from django.db import transaction
@@ -44,21 +45,19 @@ def qr(request):
 def ulika(request, pk):
     ''' выводим улику в соответсвии с id
     '''
-    posts = {
-        'Lupa': '',
-        'Photo': '',
-        'Him': '',
-        'Dictofon': '',
-    }
+
     posts = get_object_or_404(Ulika_table, idUlika=pk)
     status = 100
 
-    ''' Если у улики есть материал изучаемый инструментом Х
+    ''' status_full, status_user = 0
+        Если у улики есть материал изучаемый инструментом Х
+            status_full += 1 
             Если Игрок изучил улику с помощью интрумента Х
-                вывести информацию posts.Х
+                status_user += 1
+                Х = posts.Х
             Иначе Если у игрока есть инструмент Х
                 form.Х
-            иначе Х = ""
+        иначе Х = ""
     '''
 
     # Лупа
@@ -134,7 +133,7 @@ def update_profile(request):
             messages.success(request, ('Ваш профиль был успешно обновлен!'))
             return redirect('settings:profile')
         else:
-            messages.error(request, _('Пожалуйста, исправьте ошибки.'))
+            messages.error(request, ('Пожалуйста, исправьте ошибки.'))
     else:
         user_form = UserForm(instance=request.user)
         profile_form = ProfileForm(instance=request.user.profile)
