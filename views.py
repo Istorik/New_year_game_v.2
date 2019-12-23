@@ -6,8 +6,7 @@ from django.db import transaction
 
 from random import randint, choice
 
-from .models import Ulika_table, Qr_table, Tools_table
-
+from .models import Ulika_table, Qr_table, Tools_table, UserUlikaFead
 from .forms import UserForm, ProfileForm, Qr_tableForm
 
 import pyqrcode	# sudo pip3 install pyqrcode
@@ -45,32 +44,39 @@ def qr(request):
 def ulika(request, pk):
     ''' выводим улику в соответсвии с id
     '''
-
     posts = {
-
         'Lupa': '',
         'Photo': '',
         'Him': '',
         'Dictofon': '',
     }
-
     posts = get_object_or_404(Ulika_table, idUlika=pk)
+    status = 100
 
-    status = 15
+    ''' Если у улики есть материал изучаемый инструментом Х
+            Если Игрок изучил улику с помощью интрумента Х
+                вывести информацию posts.Х
+            Иначе Если у игрока есть инструмент Х
+                form.Х
+            иначе Х = ""
+    '''
+
+    # Лупа
+    if posts.ulikaLupa:
+        pass
+    # Фотоаппаратом
+    if posts.ulikaPhoto:
+        pass
+    #  Набором Криминалиста
+    if posts.ulikaHim:
+        pass
+    #  Диктафоном
+    if posts.ulikaDictofon:
+        pass
+
+
 
     return render(request, 'newYearGame/ulika.html', {'posts': posts, 'status': status})
-
-# def musor(User, Qr):
-#     '''
-#         Уже сканировал
-#             объект есть
-#                 вернуть мусор
-#             объекта нет
-#                 вернуть то что находил
-#         еще не сканировал
-#             unstrument()
-#     '''
-#     pass
 
 def loot(request, pk):
     ''' генерируем список из не найденных инструментов
@@ -89,17 +95,8 @@ def loot(request, pk):
         ('7', 'Йод'),
         ('8', 'Фенол Фталеин'),
         ('9', 'Керосин'),
-        ('10', 'Мусор'),
-        ('11', 'Мусор'),
-        ('12', 'Мусор'),
-        ('13', 'Мусор'),
-        ('14', 'Мусор'),
-        ('15', 'Мусор'),
-        ('16', 'Мусор'),
-        ('17', 'Мусор'),
-        ('18', 'Мусор'),
-        ('19', 'Мусор'),
-        ('20', 'Мусор'),
+        ('10', 'Мусор'), ('11', 'Мусор'), ('12', 'Мусор'), ('13', 'Мусор'), ('14', 'Мусор'),
+        ('15', 'Мусор'), ('16', 'Мусор'), ('17', 'Мусор'), ('18', 'Мусор'), ('19', 'Мусор'), ('20', 'Мусор'),
     )
 
     post = get_object_or_404(Qr_table, qr_id=pk)
@@ -108,27 +105,20 @@ def loot(request, pk):
     if test:
         print(test)
         text = 'Вы уже здесь были</br> '
-        return render(request, 'newYearGame/loot.html', {'text': text})
+
     else:
         a = list(range(1, 21))
         user_loot_list = Tools_table.objects.filter(user_id=request.user)
         if len(user_loot_list) > 19:return render(request, 'newYearGame/loot.html', {'text': 'Вы нашли все, что можно было найти'})
         l = []
         for i in user_loot_list: l.append(i.type_slot)
-
         c = list(set(a) - set(l))
         loot = choice(c)
-
         p = Tools_table(user_id=request.user, id_Qr=post, type_slot=loot)
         p.save(force_insert=True)
 
-        print(loot)
-
         text = 'Покапавшись, Вы нашли </br> <b>{}</b>'.format(type_slot_list[loot-1][1])
-        return render(request, 'newYearGame/loot.html', {'text': text})
 
-
-    text = 'Вы не нашли ни чего интересного.'
     return render(request, 'newYearGame/loot.html', {'text': text})
 
 

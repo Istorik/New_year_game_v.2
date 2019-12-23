@@ -28,8 +28,10 @@ class Qr_table(models.Model):
     def __str__(self):
         return self.qr_id
 
+
 class Tools_table(models.Model):
-    ''' id_User - кто нашел
+    ''' Таблица с лутом, во сколько, кто, на каком QR и что нашел.
+        id_User - кто нашел
         id_Qr - на каком QR коде нашел
         id_item - что нашел
         times - во сколько нашел
@@ -59,17 +61,8 @@ class Tools_table(models.Model):
         ('7', 'Йод'),
         ('8', 'Фенол Фталеин'),
         ('9', 'Керосин'),
-        ('10', 'Мусор'),
-        ('11', 'Мусор'),
-        ('12', 'Мусор'),
-        ('13', 'Мусор'),
-        ('14', 'Мусор'),
-        ('15', 'Мусор'),
-        ('16', 'Мусор'),
-        ('17', 'Мусор'),
-        ('18', 'Мусор'),
-        ('19', 'Мусор'),
-        ('20', 'Мусор'),
+        ('10', 'Мусор'), ('11', 'Мусор'), ('12', 'Мусор'), ('13', 'Мусор'), ('14', 'Мусор'),
+        ('15', 'Мусор'), ('16', 'Мусор'), ('17', 'Мусор'), ('18', 'Мусор'), ('19', 'Мусор'), ('20', 'Мусор'),
     )
 
     type_slot = models.CharField('номер инструмента',
@@ -93,7 +86,9 @@ class Tools_table(models.Model):
         )
 
 class Ulika_table(models.Model):
-
+    ''' Таблица с уликами
+        14 штук
+    '''
     idUlika = models.IntegerField(default=0)
     ulikaName = models.CharField('Название улики', max_length=64)
     ulikaMesto = models.CharField('Место нахождения', max_length=128)
@@ -107,6 +102,44 @@ class Ulika_table(models.Model):
     class Meta:
         verbose_name = 'Улика'
         verbose_name_plural = 'Улики'
+
+    def __str__(self):
+        return "[{}] {}".format(
+            self.idUlika,
+            self.ulikaName,
+        )
+
+class UserUlikaFead(models.Model):
+    ''' Кто, во сколько и какую улику нашел. чем изучил
+    '''
+    type_slot_list = (
+        ('0', 'Нашел'),
+        ('1', 'Лупа'),
+        ('2', 'Диктофон'),
+        ('3', 'Химический набор'),
+        ('4', 'Сканер'),
+    )
+    user_id = models.ForeignKey(
+        User,
+        verbose_name="Команда нашедшая qr-code улики",
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    times = models.DateTimeField("Время нахождения", auto_now_add=True)
+    id_Qr = models.ForeignKey(
+        Ulika_table,
+        verbose_name="Найденный Qr",
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    type_slot = models.CharField('Чем поюзал',
+        choices=type_slot_list,
+        default=0,
+        max_length=64)
+
+    class Meta:
+        verbose_name = 'Поюзал улику'
+        verbose_name_plural = 'Поюзал улику'
 
     def __str__(self):
         return "[{}] {}".format(
