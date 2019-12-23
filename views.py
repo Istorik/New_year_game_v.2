@@ -1,9 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, request
 
 from .models import Ulika_table
-
-
 
 # Create your views here.
 
@@ -35,10 +33,10 @@ def ulika(User, Qr):
         'Him': '',
         'Dictofon': '',
     }
-    return render(request, 'newYearGame/ulika', {'posts': posts})
+    return render(request, 'newYearGame/ulika.html', {'posts': posts})
     pass
 
-def musor(User, Qr):
+def musor(request):
     '''
         Уже сканировал
             объект есть
@@ -48,7 +46,7 @@ def musor(User, Qr):
         еще не сканировал
             unstrument()
     '''
-    pass
+    return HttpResponse("Вы нашли мусор")
 
 def unstrument(User, Qr):
     ''' генерируем список из не найденных инструментов
