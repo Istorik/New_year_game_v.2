@@ -119,8 +119,7 @@ def loot(request, pk):
     test = Tools_table.objects.filter(user_id=request.user, id_Qr=post)
 
     if test:
-        print(test)
-        text = 'Вы уже здесь были</br> '
+        text = 'Вы уже здесь были</br> И нашли <b>{}</b>'.format(test[0].get_type_slot_display())
 
     else:
         a = list(range(1, 21))
@@ -132,9 +131,9 @@ def loot(request, pk):
         loot = choice(c)
         p = Tools_table(user_id=request.user, id_Qr=post, type_slot=loot)
         p.save(force_insert=True)
-###################################################################################################
+
         text = 'Покапавшись, Вы нашли </br> <b>{}</b>'.format(type_slot_list[loot-1][1])
-##################################################################################################
+
     return render(request, 'newYearGame/loot.html', {'text': text})
 
 
@@ -154,7 +153,7 @@ def update_profile(request):
     else:
         user_form = UserForm(instance=request.user)
         profile_form = ProfileForm(instance=request.user.profile)
-    return render(request, 'newYearGame/profile.html', {
+    return render(request, 'registration/profile.html', {
         'user_form': user_form,
         'profile_form': profile_form
     })
