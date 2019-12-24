@@ -1,4 +1,4 @@
-{% extends "voice_alert/base.html" %}
+{% extends 'newYearGame/base.html' %}
 
 {% load bootstrap4 %}
 
@@ -9,7 +9,8 @@
         <p>Your username and password didn't match. Please try again.</p>
     {% endif %}
     <div class="container">
-
+        <div class="row">
+            <div class="col-12">
     <h2>Вход</h2>
     <form method="post" role="form">
         {% csrf_token %}
@@ -19,7 +20,8 @@
     </form>
 
     <p><a href='{% url 'password_reset' %}'> Восстановить пароль</a></p>
-
+                </div>
+        </div>
     </div>
 {% endblock %}
 

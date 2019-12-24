@@ -1,0 +1,31 @@
+{% extends 'newYearGame/base.html' %}
+
+{% block title %}Личный Кабинет{% endblock %}
+
+{% block content %}
+    <h3>Найденные уликик</h3>
+
+    {% if ulika %}
+    <ul>
+      {% for u in ulika %}
+      <li>{{u.id_Qr}}</li>
+      {% endfor %}
+    </ul>
+
+    {% else %}
+      <p>Вы еще не нашли ни одной улики</p>
+    {% endif %}
+
+    <h3>Найденные инструменты</h3>
+
+    {% if tools %}
+    <ul>
+      {% for tool in tools %}<li>{{ tool.get_type_slot_display }}</li>{% endfor %}
+    </ul>
+
+    {% else %}
+      <p>Вы еще не нашли ни одного инструмента</p>
+    {% endif %}
+
+
+{% endblock %}

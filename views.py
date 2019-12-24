@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, request
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
+
 from django.shortcuts import redirect
 from django.db import transaction
 
@@ -18,6 +19,13 @@ import png	# sudo pip3 install pypng
 
 def index(request):
     return HttpResponse("Добро пожаловать на нашу игру")
+
+
+def cabinet(request):
+    ulika = UserUlikaFead.objects.filter(user_id=request.user)
+    tools = Tools_table.objects.filter(user_id=request.user)
+    return render(request, 'newYearGame/ulika_list.html', {'ulika': ulika, 'tools': tools})
+
 
 @user_passes_test(lambda u: u.is_superuser)
 def qr(request):
@@ -41,7 +49,7 @@ def qr(request):
     return render(request, 'newYearGame/qr_list.html', {'qrs': image})
 
 
-
+@login_required
 def ulika(request, pk):
     ''' выводим улику в соответсвии с id
     '''
@@ -75,7 +83,17 @@ def ulika(request, pk):
 
 
 
-    return render(request, 'newYearGame/ulika.html', {'posts': posts, 'status': status})
+    return render(
+        request,
+        'newYearGame/ulika.html',
+        {
+            'posts': posts,
+            'status': status,
+            #'formLupa': formLupa,
+            #'formPhoto': formPhoto,
+            #'formHim': formHim,
+            #'formDictofon': formDictofon,
+        })
 
 def loot(request, pk):
     ''' генерируем список из не найденных инструментов

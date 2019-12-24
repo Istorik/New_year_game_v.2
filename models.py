@@ -78,9 +78,9 @@ class Tools_table(models.Model):
         verbose_name_plural = 'База Найденных инструментов'
 
     def __str__(self):
-        return "{} {} {} {}".format(
+        return "{} [{}] {} {}".format(
             self.user_id.username,
-            self.type_slot_list[int(self.type_slot)-1][1],
+            self.get_type_slot_display(),
             self.times,
             self.spent,
         )

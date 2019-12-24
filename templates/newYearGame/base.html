@@ -5,16 +5,51 @@
 {% bootstrap_css %}
 {% bootstrap_javascript jquery='full' %}
 
-{# Display django.contrib.messages as Bootstrap alerts #}
-{% bootstrap_messages %}
+{% block bootstrap4_content %}
 
 <div class="container">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <h3>{% block title %}(no title){% endblock %}</h3>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+{% if user.is_authenticated %}
+
+      <li class="nav-item">
+          <a class="nav-link" href="{% url 'cabinet' %}">Кабинет</a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" href="{% url 'logout' %}">Выход</a>
+      </li>
+{% else %}
+      <li class="nav-item">
+          <a class="nav-link" href="{% url 'login' %}?next={{request.path}}">Вход</a>
+      </li>
+{% endif %}
+    </ul>
+
+
+  </div>
+</nav>
+</div>
+    <div class="container">
+
 {% autoescape off %}
-    {% block content %}{% endblock content %}
+    {% bootstrap_messages %}
+    {% block content %}(no content){% endblock %}
 {% endautoescape %}
+
+
     <div class="row justify-content-md-center">
         <div class="col-sm-12 col-md-12 col-lg-12">
             <h6 align="center">@School632 2019 Russian, SPB. newYearGame ver 2.0</h6>
         </div>
     </div>
 </div>
+
+{% bootstrap_javascript jquery="slim" %}
+
+{% endblock %}
