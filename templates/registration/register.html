@@ -1,0 +1,13 @@
+{% extends 'newYearGame/base.html' %}
+
+{% load bootstrap4 %}
+
+{% block title %}Регистрация{% endblock %}
+{% block content %}
+    <form method="POST" class="form-group">
+	{% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons submit='Вход' %}{% endbuttons %}
+
+    </form>
+{% endblock %}

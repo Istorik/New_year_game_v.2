@@ -1,0 +1,16 @@
+{% extends 'newYearGame/base.html' %}
+{# Load the tag library #}
+{% load bootstrap4 %}
+
+{% block title %}Обновиь данные{% endblock %}
+
+{% block content %}
+
+<form method="post" class="form">
+  {% csrf_token %}
+  {% bootstrap_form user_form %}
+  {% bootstrap_form profile_form %}
+
+  <button type="submit" class="btn btn-primary">обновить</button>
+</form>
+{% endblock %}

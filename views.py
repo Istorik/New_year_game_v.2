@@ -1,15 +1,15 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, request
 from django.contrib import messages
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required, user_passes_test
 
-from django.shortcuts import redirect
 from django.db import transaction
 
 from random import randint, choice
 
 from .models import Ulika_table, Qr_table, Tools_table, UserUlikaFead
-from .forms import UserForm, ProfileForm, Qr_tableForm
+from .forms import UserForm, ProfileForm, Qr_tableForm, SignUpForm
 
 import pyqrcode	# sudo pip3 install pyqrcode
 import png	# sudo pip3 install pypng
@@ -39,7 +39,6 @@ def qr(request):
             p.save(force_insert=True)
 
     images = Qr_table.objects.all()
-
     image = []
 
     for row in images:
@@ -133,9 +132,9 @@ def loot(request, pk):
         loot = choice(c)
         p = Tools_table(user_id=request.user, id_Qr=post, type_slot=loot)
         p.save(force_insert=True)
-
+###################################################################################################
         text = 'Покапавшись, Вы нашли </br> <b>{}</b>'.format(type_slot_list[loot-1][1])
-
+##################################################################################################
     return render(request, 'newYearGame/loot.html', {'text': text})
 
 
@@ -155,7 +154,26 @@ def update_profile(request):
     else:
         user_form = UserForm(instance=request.user)
         profile_form = ProfileForm(instance=request.user.profile)
-    return render(request, 'profiles/profile.html', {
+    return render(request, 'newYearGame/profile.html', {
         'user_form': user_form,
         'profile_form': profile_form
     })
+
+
+def signup_view(request):
+    form = SignUpForm(request.POST)
+    if form.is_valid():
+        user = form.save()
+        user.refresh_from_db()
+        user.profile.first_name = form.cleaned_data.get('first_name')
+        user.profile.last_name = form.cleaned_data.get('last_name')
+        user.profile.email = form.cleaned_data.get('email')
+        user.save()
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password1')
+        user = authenticate(username=username, password=password)
+        login(request, user)
+        return redirect('/')
+    else:
+        form = SignUpForm()
+    return render(request, 'registration/register.html', {'form': form})

@@ -5,18 +5,19 @@ from django.dispatch import receiver
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    location = models.CharField('Класс', max_length=30, blank=True)
-    komanda = models.TextField('Помощники', blank=True)
+    first_name = models.CharField('Имя', max_length=100, blank=True)
+    last_name = models.CharField('Фамилия', max_length=100, blank=True)
+    location = models.CharField('Класс', max_length=8, blank=True)
+    komanda = models.TextField('Помощники')
+
+    def __str__(self):
+        return self.user.username
 
 @receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
+def update_profile_signal(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
-
 
 class Qr_table(models.Model):
     qr_id = models.IntegerField('Номер QR')

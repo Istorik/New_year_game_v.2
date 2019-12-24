@@ -18,10 +18,9 @@
         {% buttons submit='Вход' %}{% endbuttons %}
 
     </form>
-
-    <p><a href='{% url 'password_reset' %}'> Восстановить пароль</a></p>
                 </div>
         </div>
+        <a class="nav-link" href="{% url 'register' %}">Регистрация</a>
     </div>
 {% endblock %}
 
