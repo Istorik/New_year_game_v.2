@@ -9,7 +9,7 @@ class Profile(models.Model):
     last_name = models.CharField('Фамилия', max_length=100, blank=True)
     location = models.CharField('Класс', max_length=8, blank=True)
     komanda = models.TextField('Помощники')
-    #time_fin = models.DateTimeField("Время окончания игры", blank=True)
+    time_fin = models.DateTimeField("Время окончания игры", blank=True, null=True, default=None)
 
     def __str__(self):
         return self.user.username
@@ -21,7 +21,7 @@ def update_profile_signal(sender, instance, created, **kwargs):
     instance.profile.save()
 
 class Qr_table(models.Model):
-    qr_id = models.IntegerField('Номер QR')
+    qr_id = models.IntegerField('Номер QR', default=0)
 
     class Meta:
         verbose_name = 'QR'
@@ -149,6 +149,6 @@ class UserUlikaFead(models.Model):
             self.user_id.username,
             self.id_Qr.ulikaName,
             self.get_type_slot_display(),
-            # 1,1
+            #1,1,1
 
         )

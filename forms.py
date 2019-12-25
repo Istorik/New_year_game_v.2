@@ -62,3 +62,16 @@ class FormDictofon(forms.ModelForm):
     class Meta:
         model = UserUlikaFead
         fields = ('type_slot',)
+
+class FormOtvet(forms.ModelForm):
+    CHOICES = [(0, 'Ананимус'),
+             (1, 'Бармалей'),
+             (2, 'Гринч'),
+             (3, 'Саурон'),
+             (4, 'Снеговик')
+             ]
+
+    type_slot = forms.ChoiceField(label='Отметьте двух похитителей', 
+            choices=CHOICES,
+            widget=forms.CheckboxSelectMultiple,)
+

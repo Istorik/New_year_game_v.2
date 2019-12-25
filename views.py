@@ -9,7 +9,7 @@ from django.db import transaction
 from random import randint, choice
 
 from .models import Ulika_table, Qr_table, Tools_table, UserUlikaFead
-from .forms import UserForm, ProfileForm, Qr_tableForm, SignUpForm, FormLupa, FormPhoto, FormHim, FormDictofon
+from .forms import UserForm, ProfileForm, Qr_tableForm, SignUpForm, FormLupa, FormPhoto, FormHim, FormDictofon, FormOtvet
 
 import pyqrcode	# sudo pip3 install pyqrcode
 
@@ -17,10 +17,49 @@ import pyqrcode	# sudo pip3 install pyqrcode
 # Create your views here.
 
 def index(request):
+#    return HttpResponse("Привет, игра начнется в 13.00 25.12")
     return render(request, 'newYearGame/index.html')
 
+@login_required
 
 def cabinet(request):
+   
+    if request.POST:
+        form = FormOtvet(request.POST)
+        if form.is_valid():
+            if len(form) == 2 and form.count(4) == 1 and form.count(2) == 1:
+                messages.success(request, ('Похититель пойман'))
+                pass
+            else:
+                messages.error(request, ('Не верно'))
+    ''' otvet_all = {
+    'drink4':'beer', 
+    'anim4':'dog', 
+    'cigar5':'pallmall', 
+    'house1':'yellow', 
+    'nac2':'english', 
+    'drink1':'water', 
+    'cigar2':'philipmorris', 
+    'nac5':'Schwed', 
+    'house4':'white', 
+    'anim3':'bird', 
+    'drink3':'milk', 
+    'anim1':'fish', 
+    'cigar4':'marlboro', 
+    'anim5':'cat', 
+    'nac3':'Norway', 
+    'cigar1':'rothmans', 
+    'house5':'green', 
+    'house2':'blue', 
+    'drink2':'tea', 
+    'drink5':'cafe', 
+    'nac1':'german', 
+    'nac4':'denmark', 
+    'house3':'red', 
+    'cigar3':'dunhill', 
+    'anim2':'horse'}'''
+    
+
     fin = ""
     ulika = UserUlikaFead.objects.filter(user_id=request.user, type_slot=0)
     if len(UserUlikaFead.objects.filter(user_id=request.user)) >= 42:
@@ -41,7 +80,7 @@ def cabinet(request):
             'Снеговик ест конфеты «Коровка».'
         ]
         tools = ['']
-        form = 1
+        form = FormOtvet()
     else:
         tools = Tools_table.objects.filter(user_id=request.user)
         form = ""
@@ -178,6 +217,7 @@ def ulika(request, pk):
             'qrc': image,
         })
 
+@login_required
 def loot(request, pk):
     ''' генерируем список из не найденных инструментов
                 выводим случайный объект
@@ -208,9 +248,9 @@ def loot(request, pk):
     else:
         a = list(range(1, 21))
         user_loot_list = Tools_table.objects.filter(user_id=request.user)
-        if len(user_loot_list) > 19:return render(request, 'newYearGame/loot.html', {'text': 'Вы нашли все, что можно было найти'})
+        if len(user_loot_list) > 30 :return render(request, 'newYearGame/loot.html', {'text': 'Вы нашли все, что можно было найти'})
         l = []
-        for i in user_loot_list: l.append(i.type_slot)
+        for i in user_loot_list: l.append(int(i.type_slot))
         c = list(set(a) - set(l))
         loot = choice(c)
         p = Tools_table(user_id=request.user, id_Qr=post, type_slot=loot)
