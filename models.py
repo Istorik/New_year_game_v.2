@@ -9,6 +9,7 @@ class Profile(models.Model):
     last_name = models.CharField('Фамилия', max_length=100, blank=True)
     location = models.CharField('Класс', max_length=8, blank=True)
     komanda = models.TextField('Помощники')
+    #time_fin = models.DateTimeField("Время окончания игры", blank=True)
 
     def __str__(self):
         return self.user.username
@@ -144,7 +145,10 @@ class UserUlikaFead(models.Model):
         verbose_name_plural = 'Поюзал улику'
 
     def __str__(self):
-        return "[{}] {}".format(
-            self.idUlika,
-            self.ulikaName,
+        return "[{}] {} | {}".format(
+            self.user_id.username,
+            self.id_Qr.ulikaName,
+            self.get_type_slot_display(),
+            # 1,1
+
         )

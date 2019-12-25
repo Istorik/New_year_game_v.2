@@ -1,5 +1,5 @@
 from django import forms
-from .models import Tools_table, Profile, Qr_table
+from .models import Tools_table, Profile, Qr_table, UserUlikaFead
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -29,3 +29,36 @@ class Qr_tableForm(forms.ModelForm):
     class Meta:
         model = Qr_table
         fields = ('qr_id',)
+
+
+class FormLupa(forms.ModelForm):
+    CHOICES = [('1', 'Изучить'),
+               ('0', 'Оставить')]
+    type_slot = forms.ChoiceField(label='Лупа', choices=CHOICES, widget=forms.RadioSelect)
+    class Meta:
+        model = UserUlikaFead
+        fields = ('type_slot',)
+
+class FormPhoto(forms.ModelForm):
+    CHOICES = [('4', 'Изучить'),
+               ('0', 'Оставить')]
+    type_slot = forms.ChoiceField(label='Сканер', choices=CHOICES, widget=forms.RadioSelect)
+    class Meta:
+        model = UserUlikaFead
+        fields = ('type_slot',)
+
+class FormHim(forms.ModelForm):
+    CHOICES = [('3', 'Изучить'),
+               ('0', 'Оставить')]
+    type_slot = forms.ChoiceField(label='Химический набор', choices=CHOICES, widget=forms.RadioSelect)
+    class Meta:
+        model = UserUlikaFead
+        fields = ('type_slot',)
+
+class FormDictofon(forms.ModelForm):
+    CHOICES = [('2', 'Изучить'),
+               ('0', 'Оставить')]
+    type_slot = forms.ChoiceField(label='Диктофон', choices=CHOICES, widget=forms.RadioSelect)
+    class Meta:
+        model = UserUlikaFead
+        fields = ('type_slot',)

@@ -9,22 +9,43 @@ from django.db import transaction
 from random import randint, choice
 
 from .models import Ulika_table, Qr_table, Tools_table, UserUlikaFead
-from .forms import UserForm, ProfileForm, Qr_tableForm, SignUpForm
+from .forms import UserForm, ProfileForm, Qr_tableForm, SignUpForm, FormLupa, FormPhoto, FormHim, FormDictofon
 
 import pyqrcode	# sudo pip3 install pyqrcode
-import png	# sudo pip3 install pypng
 
 
 # Create your views here.
 
 def index(request):
-    return HttpResponse("Добро пожаловать на нашу игру")
+    return render(request, 'newYearGame/index.html')
 
 
 def cabinet(request):
-    ulika = UserUlikaFead.objects.filter(user_id=request.user)
-    tools = Tools_table.objects.filter(user_id=request.user)
-    return render(request, 'newYearGame/ulika_list.html', {'ulika': ulika, 'tools': tools})
+    fin = ""
+    ulika = UserUlikaFead.objects.filter(user_id=request.user, type_slot=0)
+    if len(UserUlikaFead.objects.filter(user_id=request.user)) >= 42:
+        fin = [
+            'Первый преступник пил воду на месте преступления',
+            'Второй преступник держит зебру',
+            'Саурон пришел с красными перчатками',
+            'Бармалей оставил свою собаку у входа на территорию школы.',
+            'Хозяин зеленого плаща пьет кофе.',
+            'Анонимус пьёт только чай.',
+            'Кто-то в зеленом плаще зашел сразу после персонажа в белых ботинках.',
+            'Любитель барбарисок разводит улиток.',
+            'Тот кто пришел с желтым зонтиком был с Чупа-Чупсом.',
+            'Тот кто пришел третим пьёт молоко.',
+            'Гринч пришел первым, а сразу за ним кто в синих штанах.',
+            'Тот кто пришел вместе с хозяином лошади, любитель Чупа-Чупсов.',
+            'Любитель желатиновых мишек пьет апельсиновый сок.',
+            'Снеговик ест конфеты «Коровка».'
+        ]
+        tools = ['']
+        form = 1
+    else:
+        tools = Tools_table.objects.filter(user_id=request.user)
+        form = ""
+    return render(request, 'newYearGame/ulika_list.html', {'ulika': ulika, 'tools': tools, 'fin':fin})
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -54,7 +75,38 @@ def ulika(request, pk):
     '''
 
     posts = get_object_or_404(Ulika_table, idUlika=pk)
+
+    if request.POST:
+        lupa = FormLupa(request.POST)
+        Dictofon = FormDictofon(request.POST)
+        Him = FormHim(request.POST)
+        Photo = FormPhoto(request.POST)
+
+        if lupa.is_valid():
+            lupa = UserUlikaFead(user_id=request.user, id_Qr=posts, type_slot=1)
+            lupa.save(force_insert=True)
+
+        if Dictofon.is_valid():
+            Dictofon = UserUlikaFead(user_id=request.user, id_Qr=posts, type_slot=2)
+            Dictofon.save(force_insert=True)
+
+        if Him.is_valid():
+            Him = UserUlikaFead(user_id=request.user, id_Qr=posts, type_slot=3)
+            Him.save(force_insert=True)
+
+        if Photo.is_valid():
+            Photo = UserUlikaFead(user_id=request.user, id_Qr=posts, type_slot=4)
+            Photo.save(force_insert=True)
+
+        messages.success(request, ('Улика изучена'))
+
+    fild = UserUlikaFead.objects.filter(user_id=request.user, id_Qr=posts, type_slot=0)
+    if not fild:
+        fild = UserUlikaFead(user_id=request.user, id_Qr=posts)
+        fild.save(force_insert=True)
+
     status = 100
+    status_full, status_user = 0, 0
 
     ''' status_full, status_user = 0
         Если у улики есть материал изучаемый инструментом Х
@@ -66,32 +118,64 @@ def ulika(request, pk):
                 form.Х
         иначе Х = ""
     '''
+    formLupa = ""
+    formPhoto = ""
+    formHim = ""
+    formDictofon = ""
 
     # Лупа
     if posts.ulikaLupa:
-        pass
+        status_full += 1
+        if UserUlikaFead.objects.filter(user_id=request.user, id_Qr=posts, type_slot=1):
+            status_user += 1
+            formLupa = posts.ulikaLupa
+
+        elif Tools_table.objects.filter(user_id=request.user, type_slot=1):
+            formLupa = FormLupa()
+
+
     # Фотоаппаратом
     if posts.ulikaPhoto:
-        pass
+        status_full += 1
+        if UserUlikaFead.objects.filter(user_id=request.user, id_Qr=posts, type_slot=4):
+            status_user += 1
+            formPhoto = posts.ulikaPhoto
+
+        elif Tools_table.objects.filter(user_id=request.user, type_slot=4):
+            formPhoto = FormPhoto()
+
     #  Набором Криминалиста
     if posts.ulikaHim:
-        pass
+        status_full += 1
+        if UserUlikaFead.objects.filter(user_id=request.user, id_Qr=posts, type_slot=3):
+            status_user += 1
+            formHim = posts.ulikaHim
+        elif Tools_table.objects.filter(user_id=request.user, type_slot=3):
+            formHim = FormHim()
+
     #  Диктафоном
     if posts.ulikaDictofon:
-        pass
+        status_full += 1
+        if UserUlikaFead.objects.filter(user_id=request.user, id_Qr=posts, type_slot=2):
+            status_user += 1
+            formDictofon = posts.ulikaDictofon
+        elif Tools_table.objects.filter(user_id=request.user, type_slot=2):
+            formDictofon = FormDictofon()
 
-
+    code = pyqrcode.create('http://qvest.asspo.ru/{}/ulika'.format(pk))
+    image = code.png_as_base64_str(scale=6)
 
     return render(
         request,
         'newYearGame/ulika.html',
         {
             'posts': posts,
-            'status': status,
-            #'formLupa': formLupa,
-            #'formPhoto': formPhoto,
-            #'formHim': formHim,
-            #'formDictofon': formDictofon,
+            'status': status_user/status_full*100,
+            'formLupa': formLupa,
+            'formPhoto': formPhoto,
+            'formHim': formHim,
+            'formDictofon': formDictofon,
+            'qrc': image,
         })
 
 def loot(request, pk):

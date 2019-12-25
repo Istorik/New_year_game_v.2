@@ -1,49 +1,41 @@
-{# Load the tag library #}
+{% extends 'newYearGame/base.html' %}
 {% load bootstrap4 %}
+{% block title %}Спасение снегурочки{% endblock %}
 
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript jquery='full' %}
-
-{# Display django.contrib.messages as Bootstrap alerts #}
-{% bootstrap_messages %}
+{% block content %}
 
 <div class="container">
 
 
-  <div class="row">
-    <div class="col-sm-12 col-md-12 col-lg-8">
-        <form method="post" class="form-control-lg">
-        <div class="form-group">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        {% buttons %}
-            <button type="submit" class="btn btn-primary btn-lg btn-block">Проиграть</button>
-        {% endbuttons %}
-        </div>
-        </form>
-    </div>
-    <div class="col-sm-12 col-md-12 col-lg-4">
+<div class="row">
+<div class="col-sm-12 col-md-12 col-lg-8">
+    <p>
+В городе проходит саммит зимних сказочных персонажей. Мероприятие должна вести внучка одного из участников саммита - Снегурочка.
+    </p>
+<p>
+Само выступление Снегурочки намечено на 18-00,а пока она разъезжает по школам города и поздравляет ребят с новым годом.
+    </p>
 
-        <form method="post" class="form-control-lg" action="{% url 'alert' %}" id="alert">
-            <div class="form-check">
-                 <input class="form-check-input" type="checkbox" name='uch' value="1" id="defaultCheck1">
-                 <label class="form-check-label" for="defaultCheck1">
-                    Учебная тревога
-                 </label>
-            </div>
-            {% csrf_token %}
-            {% buttons %}
-                {% for alert in alert_form %}
-                    <button type="submit" class="btn btn-danger btn-lg btn-block" name="id_alert" value="{{alert.id}}" >{{alert.name}}</button>
-                {% endfor %}
-            {% endbuttons %}
-            </form>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12 col-md-12 col-lg-8">
-	    <h6>@School632 2019 Russian, SPB. newYearGame ver 2.0</h6>
-    </div>
-  </div>
+<p>
+    В одной из школ Снегурочка пропадает так и не выйдя к ребятам. Все агенты ФСБ (по идее ФСО) задействованы для охраны саммита не могут оперативно приехать в школу для проведения розыскных действий. Но по стечению __ обстоятельств рядом со школой находится гениальный сыщик один из братьев Пилотов. Ему то и поручается найти Снегурочку и избежать международного скандала
+</p>
+    <p>Прибыв на место, генеальный сыщик (возможно со стажером, для возможности играть командой) выясняет, что в школу друг за другом зашли 5 подозрительных личностей.</p>
+
+<p>Список подозреваемых</p>
+<ul>
+    <li>Ананимус</li>
+    <li>Бармалей</li>
+    <li>Гринч </li>
+    <li>Саурон</li>
+    <li>Снеговик </li>
+
+    Известно, что 5 разных человек зашли в школу с разного цвета вещами, любят 5 разных сладостей, выращивают 5 разных видов животных, пьют 5 разных видов напитков.
+    <span><b>Вопрос: Кто похитил Снегурочку?</b></span>
+
+
+</ul>
 </div>
+</div>
+
+
+  {% endblock %}

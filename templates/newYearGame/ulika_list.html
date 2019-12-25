@@ -1,5 +1,5 @@
 {% extends 'newYearGame/base.html' %}
-
+{% load bootstrap4 %}
 {% block title %}Личный Кабинет{% endblock %}
 
 {% block content %}
@@ -8,13 +8,27 @@
     {% if ulika %}
     <ul>
       {% for u in ulika %}
-      <li>{{u.id_Qr}}</li>
+        <li><a href="https://qvest.asspo.ru/{{u.id_Qr.idUlika}}/ulika">{{u.id_Qr.ulikaName}}</a></li>
       {% endfor %}
     </ul>
 
     {% else %}
-      <p>Вы еще не нашли ни одной улики</p>
-    {% endif %}
+        {% if fin %}
+            {% for f in fin %}
+                <p>f</p>
+            {% endfor %}
+        {% else %}
+        <p>Вы еще не нашли ни одной улики</p>
+    {% endif %}{% endif %}
+
+    {% if forma %}
+    <form method="post" role="form">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons submit='Задержать преступника' %}{% endbuttons %}
+
+    </form>
+        {% endif %}
 
     <h3>Найденные инструменты</h3>
 
