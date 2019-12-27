@@ -10,5 +10,5 @@ urlpatterns = [
     path('qr', views.qr, name='qr'),
     path('update', views.update_profile, name='update'),
     path('register', views.signup_view, name='register'),
-
+    path('musor', views.musor, name='musor'),
 ]

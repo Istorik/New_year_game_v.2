@@ -112,10 +112,7 @@ class Ulika_table(models.Model):
         verbose_name_plural = 'Улики'
 
     def __str__(self):
-        return "[{}] {}".format(
-            self.idUlika,
-            self.ulikaName,
-        )
+        return self.ulikaName
 
 class UserUlikaFead(models.Model):
     ''' Кто, во сколько и какую улику нашел. чем изучил

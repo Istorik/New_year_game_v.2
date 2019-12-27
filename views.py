@@ -202,7 +202,32 @@ def ulika(request, pk):
             'qrc': image,
         })
 
-@login_required
+    posts = {
+        'ulikaImg': '',
+        'ulikaMesto': '',
+        'status': '',
+        'ulikaName': '',
+        'ulikaText': '',
+        'Lupa': '',
+        'Photo': '',
+        'Him': '',
+        'Dictofon': '',
+    }
+    return render(request, 'newYearGame/ulika.html', {'posts': posts})
+    pass
+
+def musor(request):
+    '''
+        Уже сканировал
+            объект есть
+                вернуть мусор
+            объекта нет
+                вернуть то что находил
+        еще не сканировал
+            unstrument()
+    '''
+    return HttpResponse("Вы нашли мусор")
+
 def loot(request, pk):
     ''' генерируем список из не найденных инструментов
                 выводим случайный объект
