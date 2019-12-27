@@ -8,7 +8,7 @@
     {% if ulika %}
     <ul>
       {% for u in ulika %}
-        <li><a href="https://qvest.asspo.ru/{{u.id_Qr.idUlika}}/ulika">{{u.id_Qr.ulikaName}}</a></li>
+        <li><a href="http://qvest.asspo.ru/{{u.id_Qr.idUlika}}/ulika">{{u.id_Qr.ulikaName}}</a></li>
       {% endfor %}
     </ul>
 
@@ -21,7 +21,7 @@
         <p>Вы еще не нашли ни одной улики</p>
     {% endif %}{% endif %}
 
-    {% if forma %}
+    {% if form %}
     <form method="post" role="form">
         {% csrf_token %}
         {% bootstrap_form form %}

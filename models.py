@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -9,7 +10,11 @@ class Profile(models.Model):
     last_name = models.CharField('Фамилия', max_length=100, blank=True)
     location = models.CharField('Класс', max_length=8, blank=True)
     komanda = models.TextField('Помощники')
-    #time_fin = models.DateTimeField("Время окончания игры", blank=True)
+    time_fin = models.DateTimeField("Время окончания игры", blank=True, null=True)
+
+    def finish(self):
+        self.time_fin = timezone.now()
+        self.save()
 
     def __str__(self):
         return self.user.username
@@ -149,6 +154,6 @@ class UserUlikaFead(models.Model):
             self.user_id.username,
             self.id_Qr.ulikaName,
             self.get_type_slot_display(),
-            # 1,1
+            #1,1,1
 
         )
