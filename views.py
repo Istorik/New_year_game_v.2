@@ -3,13 +3,14 @@ from django.http import HttpResponse, request
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.utils import timezone
 
 from django.db import transaction
 
 from random import randint, choice
 
 from .models import Ulika_table, Qr_table, Tools_table, UserUlikaFead, Profile
-from .forms import UserForm, ProfileForm, Qr_tableForm, SignUpForm, FormLupa, FormPhoto, FormHim, FormDictofon
+from .forms import UserForm, ProfileForm, Qr_tableForm, SignUpForm, FormLupa, FormPhoto, FormHim, FormDictofon, FormOtvet
 
 import pyqrcode	# sudo pip3 install pyqrcode
 
@@ -62,7 +63,7 @@ def cabinet(request):
         tools = Tools_table.objects.filter(user_id=request.user)
         form = ""
 
-        return render(request, 'newYearGame/ulika_list.html', {
+    return render(request, 'newYearGame/ulika_list.html', {
             'ulika': ulika,
 	    'tools': tools,
 	    'fin':fin,

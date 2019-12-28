@@ -21,7 +21,7 @@
         <p>Вы еще не нашли ни одной улики</p>
     {% endif %}{% endif %}
 
-    {% if forma %}
+    {% if form %}
     <form method="post" role="form">
         {% csrf_token %}
         {% bootstrap_form form %}
