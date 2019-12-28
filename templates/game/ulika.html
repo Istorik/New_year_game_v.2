@@ -1,0 +1,54 @@
+{% extends 'newYearGame/base.html' %}
+{% load bootstrap4 %}
+{% block title %}Покопаться в углу{% endblock %}
+
+{% block content %}
+
+
+  <div class="row justify-content-md-center">
+    <div class="col-sm-12 col-md-12 col-lg-6">
+
+      <h2>Улика № {{ posts.id }}/14</h2>
+    </div>
+  </div>
+		<div class="row justify-content-md-center">
+			<div class='col-sm-12 col-md-12 col-lg-4'>
+			  <img src= "/media/{{posts.ulikaImg}}"  alt='avatar'>
+			</div>
+
+			<div class='col-sm-12 col-md-12 offset-lg-2 col-lg-6'>
+				<p><b>Местонахождение улики:</b> {{ posts.ulikaMesto}}</p>
+				<p><b>Улика изучена на: </b></p>
+				<div class="progress">
+					<div class="progress-bar bg-warning" style="width: {{ status }}%" aria-valuenow="{{ status }}" aria-valuemin="0" aria-valuemax="100">
+						{{ status }}%
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row justify-content-md-center">
+			<div class='col'>
+				<h1>{{ posts.ulikaName}}</h1>
+				<p>{{ posts.ulikaText}}</p>
+			</div>
+		</div>
+<div class="row justify-content-md-center">
+	<div class="col">
+		<form method="POST" class="form-group">
+			{% csrf_token %}
+			<div class="row"><div class="col">{{formLupa}}</div></div>
+			<div class="row"><div class="col">{{formPhoto}}</div></div>
+			<div class="row"><div class="col">{{formHim}}</div></div>
+			<div class="row"><div class="col">{{formDictofon}}</div></div>
+        	<div class="row justify-content-md-center"><div class="col">{% buttons submit='Изучить' %}{% endbuttons %}</div></div>
+
+		</form>
+	</div>
+
+  </div>
+<div class="row justify-content-md-center">
+    <div class="col-sm-12 col-md-12 col-lg-4">
+			<img width="200" height="200"  src="data:image/png;base64,{{ qrc }}">
+    </div>
+</div>
+  {% endblock %}

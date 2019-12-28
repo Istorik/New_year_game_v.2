@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -111,10 +112,7 @@ class Ulika_table(models.Model):
         verbose_name_plural = 'Улики'
 
     def __str__(self):
-        return "[{}] {}".format(
-            self.idUlika,
-            self.ulikaName,
-        )
+        return self.ulikaName
 
 class UserUlikaFead(models.Model):
     ''' Кто, во сколько и какую улику нашел. чем изучил
@@ -153,6 +151,6 @@ class UserUlikaFead(models.Model):
             self.user_id.username,
             self.id_Qr.ulikaName,
             self.get_type_slot_display(),
-            # 1,1
+            #1,1,1
 
         )
