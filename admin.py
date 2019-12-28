@@ -17,6 +17,5 @@ class ProfileAdmin(admin.ModelAdmin):
 
     def user_time_start(self, obj):
         return obj.user.date_joined
-    
-    user_time_start.admin_order_field = 'user__date_joined'
 
+    user_time_start.admin_order_field = 'user__date_joined'

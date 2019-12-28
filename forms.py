@@ -74,5 +74,5 @@ class FormOtvet(forms.Form):
 
     type_slot = forms.MultipleChoiceField(label='Отметьте двух похитителей', 
             choices=CHOICES,
-            widget=forms.CheckboxSelectMultiple,)
-
+            widget=forms.CheckboxSelectMultiple,
+            )

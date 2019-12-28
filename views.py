@@ -3,8 +3,8 @@ from django.http import HttpResponse, request
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required, user_passes_test
-
 from django.utils import timezone
+
 from django.db import transaction
 
 from random import randint, choice
@@ -17,14 +17,12 @@ import pyqrcode	# sudo pip3 install pyqrcode
 
 # Create your views here.
 
-
 def index(request):
-#    return HttpResponse("Привет, игра начнется в 13.00 25.12")
     return render(request, 'newYearGame/index.html')
 
-@login_required
 
 def cabinet(request):
+
     if Profile.objects.filter(user=request.user, time_fin__isnull=False):
         return HttpResponse("Вы закончили игру")
    
@@ -64,13 +62,13 @@ def cabinet(request):
     else:
         tools = Tools_table.objects.filter(user_id=request.user)
         form = ""
-    return render(request, 'newYearGame/ulika_list.html', {
-        'ulika': ulika, 
-        'tools': tools, 
-        'fin':fin, 
-        'form':form, 
-        })
 
+    return render(request, 'newYearGame/ulika_list.html', {
+            'ulika': ulika,
+	    'tools': tools,
+	    'fin':fin,
+	    'form':form,
+        })
 
 @user_passes_test(lambda u: u.is_superuser)
 def qr(request):
@@ -202,32 +200,6 @@ def ulika(request, pk):
             'qrc': image,
         })
 
-    posts = {
-        'ulikaImg': '',
-        'ulikaMesto': '',
-        'status': '',
-        'ulikaName': '',
-        'ulikaText': '',
-        'Lupa': '',
-        'Photo': '',
-        'Him': '',
-        'Dictofon': '',
-    }
-    return render(request, 'newYearGame/ulika.html', {'posts': posts})
-    pass
-
-def musor(request):
-    '''
-        Уже сканировал
-            объект есть
-                вернуть мусор
-            объекта нет
-                вернуть то что находил
-        еще не сканировал
-            unstrument()
-    '''
-    return HttpResponse("Вы нашли мусор")
-
 def loot(request, pk):
     ''' генерируем список из не найденных инструментов
                 выводим случайный объект
@@ -258,7 +230,7 @@ def loot(request, pk):
     else:
         a = list(range(1, 21))
         user_loot_list = Tools_table.objects.filter(user_id=request.user)
-        if len(user_loot_list) > 30 :return render(request, 'newYearGame/loot.html', {'text': 'Вы нашли все, что можно было найти'})
+        if len(user_loot_list) > 19:return render(request, 'newYearGame/loot.html', {'text': 'Вы нашли все, что можно было найти'})
         l = []
         for i in user_loot_list: l.append(int(i.type_slot))
         c = list(set(a) - set(l))
