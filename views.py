@@ -8,7 +8,7 @@ from django.db import transaction
 
 from random import randint, choice
 
-from .models import Ulika_table, Qr_table, Tools_table, UserUlikaFead
+from .models import Ulika_table, Qr_table, Tools_table, UserUlikaFead, Profile
 from .forms import UserForm, ProfileForm, Qr_tableForm, SignUpForm, FormLupa, FormPhoto, FormHim, FormDictofon
 
 import pyqrcode	# sudo pip3 install pyqrcode
