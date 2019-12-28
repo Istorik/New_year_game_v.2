@@ -9,7 +9,11 @@ class Profile(models.Model):
     last_name = models.CharField('Фамилия', max_length=100, blank=True)
     location = models.CharField('Класс', max_length=8, blank=True)
     komanda = models.TextField('Помощники')
-    #time_fin = models.DateTimeField("Время окончания игры", blank=True)
+    time_fin = models.DateTimeField("Время окончания игры", blank=True, null=True)
+
+    def finish(self):
+        self.time_fin = timezone.now()
+        self.save()
 
     def __str__(self):
         return self.user.username

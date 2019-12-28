@@ -21,6 +21,22 @@ def index(request):
 
 
 def cabinet(request):
+
+    if Profile.objects.filter(user=request.user, time_fin__isnull=False):
+        return HttpResponse("Вы закончили игру")
+   
+    if request.POST:
+        form = FormOtvet(request.POST)
+        if form.is_valid():
+            form = form.cleaned_data.get('type_slot')
+            if len(form) == 2 and form.count('4') == 1 and form.count('2') == 1:
+                messages.success(request, ('Похититель пойман'))
+                Profile.objects.filter(user=request.user).update(time_fin = timezone.now())
+            else:
+                messages.error(request, ('Не верно'))
+        else:
+            messages.success(request, (form.errors))
+
     fin = ""
     ulika = UserUlikaFead.objects.filter(user_id=request.user, type_slot=0)
     if len(UserUlikaFead.objects.filter(user_id=request.user)) >= 42:
@@ -41,12 +57,17 @@ def cabinet(request):
             'Снеговик ест конфеты «Коровка».'
         ]
         tools = ['']
-        form = 1
+        form = FormOtvet(request.POST)
     else:
         tools = Tools_table.objects.filter(user_id=request.user)
         form = ""
-    return render(request, 'newYearGame/ulika_list.html', {'ulika': ulika, 'tools': tools, 'fin':fin})
 
+        return render(request, 'newYearGame/ulika_list.html', {
+            'ulika': ulika,
+	    'tools': tools,
+	    'fin':fin,
+	    'form':form,
+        })
 
 @user_passes_test(lambda u: u.is_superuser)
 def qr(request):
@@ -210,7 +231,7 @@ def loot(request, pk):
         user_loot_list = Tools_table.objects.filter(user_id=request.user)
         if len(user_loot_list) > 19:return render(request, 'newYearGame/loot.html', {'text': 'Вы нашли все, что можно было найти'})
         l = []
-        for i in user_loot_list: l.append(i.type_slot)
+        for i in user_loot_list: l.append(int(i.type_slot))
         c = list(set(a) - set(l))
         loot = choice(c)
         p = Tools_table(user_id=request.user, id_Qr=post, type_slot=loot)
